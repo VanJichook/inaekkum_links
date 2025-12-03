@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Realistic Cloudy Sky */
+    background-color: #87CEEB;
+    /* Fallback */
+    background-image: url('assets/sky_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* Parallax-like feel */
+}
+
+.captcha-container {
+    background-color: white;
+    width: 100%;
+    max-width: 400px;
+    /* Typical mobile width or captcha widget size */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.captcha-header {
+    background-color: #73cfd9;
+    /* Updated Color */
+    color: white;
+    padding: 20px;
+    margin-bottom: 10px;
+    position: relative;
+    /* For absolute positioning of logo */
+    overflow: hidden;
+    /* Clip logo if it overflows */
+    min-height: 100px;
+    /* Ensure space */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.header-text {
+    position: relative;
+    z-index: 2;
+    /* Above the watermark */
+}
+
+.header-text p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.4;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.header-text p strong {
+    font-size: 28px;
+    display: block;
+    margin: 5px 0;
+}
+
+.header-text p:last-child {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.header-logo-watermark {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 180px;
+    /* Adjust size as needed */
+    height: auto;
+    opacity: 0.4;
+    /* Faint */
+    filter: brightness(0) invert(1);
+    /* Make white */
+    transform: rotate(-5deg);
+    /* Slight tilt for style */
+    z-index: 1;
+}
+
+/* If the logo is black text on transparent, we might need to invert it to look good on blue. 
+   Let's assume the provided logo is black text. */
+
+.captcha-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.grid-item {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    /* 1:1 Aspect Ratio */
+    background-size: cover;
+    background-position: center;
+    text-decoration: none;
+    color: white;
+    overflow: hidden;
+}
+
+.grid-item .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Slight dark overlay for text readability */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.grid-item:hover .overlay,
+.grid-item:active .overlay {
+    /* Show on tap for mobile */
+    opacity: 1;
+}
+
+/* Always show overlay on mobile? 
+   Maybe better to always show icon but text on hover? 
+   Or just always show everything subtly. 
+   Let's try: always show icon, text on hover?
+   Actually, for a link page, clarity is key. Let's make the overlay always visible but semi-transparent, 
+   or maybe just the icon is visible and text appears.
+   
+   Let's go with: Overlay always visible but light, becomes darker on hover.
+*/
+
+.grid-item .overlay {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.grid-item:hover .overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.grid-item .overlay i {
+    font-size: 24px;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.grid-item .overlay span {
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.captcha-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5px;
+    border-top: 1px solid #eee;
+}
+
+.captcha-footer .icons {
+    color: #777;
+    font-size: 18px;
+}
+
+.captcha-footer .icons i {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.verify-btn {
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.verify-btn:hover {
+    background-color: #357ABD;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    body {
+        background-color: white;
+        align-items: flex-start;
+    }
+
+    .captcha-container {
+        box-shadow: none;
+        max-width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .captcha-grid {
+        flex-grow: 1;
+        align-content: center;
+        /* Center grid vertically if extra space */
+    }
+
+    .captcha-footer {
+        margin-top: auto;
+        padding-bottom: 20px;
+        /* Safe area */
+    }
+}
+
+/* Effects */
+
+/* Invert Effect */
+.grid-item.effect-invert {
+    filter: invert(1);
+}
+
+.grid-item.effect-invert .overlay {
+    filter: invert(1);
+    /* Re-invert overlay to keep icon/text normal? 
+                          If we invert the whole item, the overlay (black) becomes white, text (white) becomes black.
+                          Let's see if user wants the PHOTO inverted or the WHOLE TILE.
+                          "Apple Music's photo is inverted".
+                          If I filter the grid-item, everything inverts.
+                          To keep text readable, maybe I should re-invert the overlay?
+                          Let's try re-inverting the overlay so it looks normal on top of inverted photo. */
+}
+
+
+
+/* Blur Effect */
+.grid-item.effect-blur {
+    /* No filter on container to avoid blurring the overlay text? 
+       If we blur the container, everything blurs.
+       User said "Instagram photo... slight blur".
+       So we should blur the background image but keep text sharp.
+       We can use a pseudo-element for the background image and blur that.
+    */
+    position: relative;
+    overflow: hidden;
+    background-image: none !important;
+    /* Hide default background */
+}
+
+.grid-item.effect-blur::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/instagram_new.jpg');
+    /* Updated to new Instagram image */
+    /* Hardcoded for now as per previous logic, or use inherit if possible? 
+                                                 Inherit won't work if parent has none. 
+                                                 We need to set the image on the pseudo element.
+                                                 The HTML has inline style for background-image.
+                                                 We can't easily grab that in CSS.
+                                                 
+                                                 Alternative: Blur the container and un-blur the overlay?
+                                                 Backdrop-filter? No.
+                                                 
+                                                 Let's try:
+                                                 .grid-item.effect-blur { filter: blur(2px); }
+                                                 .grid-item.effect-blur .overlay { filter: blur(0); } -> Won't work, child is blurred if parent is.
+                                                 
+                                                 Better: Use the pseudo-element technique but we need the image URL.
+                                                 Since we know it's 'assets/photo1.png' for Instagram (from previous steps), we can set it here.
+                                                 */
+    background-size: cover;
+    background-position: center;
+    filter: blur(2px);
+    transform: scale(1.1);
+    /* Scale up to hide blurred edges */
+    z-index: 0;
+}
+
+.grid-item.effect-blur .overlay {
+    z-index: 1;
+    /* Ensure overlay is on top */
+}

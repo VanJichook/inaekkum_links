@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inaekkum Smart Links</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="captcha-container">
+        <div class="captcha-header">
+            <div class="header-text">
+                <p>Select all images with</p>
+                <p><strong>Inaekkum</strong></p> <!-- Added text subject since logo is now decorative/watermark -->
+                <p>Click verify once there are none left.</p>
+            </div>
+            <img src="assets/header_logo.png" alt="Inaekkum" class="header-logo-watermark">
+        </div>
+        <div class="captcha-grid">
+            <!-- 1. Spotify -->
+            <a href="https://open.spotify.com/artist/3EtdypSEIIWivFwpQJSg0w" target="_blank" class="grid-item"
+                style="background-image: url('assets/photo1.png');">
+                <div class="overlay">
+                    <i class="fab fa-spotify"></i>
+                    <span>Spotify</span>
+                </div>
+            </a>
+            <!-- 2. Naver Blog -->
+            <a href="https://blog.naver.com/inaekkum" target="_blank" class="grid-item"
+                style="background-image: url('assets/blog_new.jpg');">
+                <div class="overlay">
+                    <i class="fa-solid fa-n"></i> <!-- Custom N or generic blog icon -->
+                    <span>Blog</span>
+                </div>
+            </a>
+            <!-- 3. Official Site -->
+            <a href="https://vanjichook.github.io/inaekkum_official/index.html" target="_blank" class="grid-item"
+                style="background-image: url('assets/photo3.jpg');">
+                <div class="overlay">
+                    <i class="fas fa-globe"></i>
+                    <span>Official</span>
+                </div>
+            </a>
+            <!-- 4. Apple Music -->
+            <a href="https://music.apple.com/kr/artist/%EC%9D%B4%EB%82%B4%EA%BF%88/1555426625" target="_blank"
+                class="grid-item" style="background-image: url('assets/bandcamp_final.jpg');">
+                <div class="overlay">
+                    <i class="fab fa-apple"></i>
+                    <span>Apple Music</span>
+                </div>
+            </a>
+            <!-- 5. Bandcamp -->
+            <a href="https://inaekkum.bandcamp.com/" target="_blank" class="grid-item effect-invert"
+                style="background-image: url('assets/photo1.png');">
+                <div class="overlay">
+                    <i class="fab fa-bandcamp"></i>
+                    <span>Bandcamp</span>
+                </div>
+            </a>
+            <!-- 6. Kakao Open Chat -->
+            <a href="https://open.kakao.com/o/ghAOuSTf" target="_blank" class="grid-item"
+                style="background-image: url('assets/kakao_new.jpg');">
+                <div class="overlay">
+                    <i class="fas fa-comments"></i>
+                    <span>Kakao</span>
+                </div>
+            </a>
+            <!-- 7. Instagram -->
+            <a href="https://www.instagram.com/inaekkum_official" target="_blank" class="grid-item effect-blur"
+                style="background-image: url('assets/instagram_new.jpg');">
+                <div class="overlay">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </div>
+            </a>
+            <!-- 8. X (Twitter) -->
+            <a href="https://x.com/inaekkum" target="_blank" class="grid-item"
+                style="background-image: url('assets/x_new.jpg');">
+                <div class="overlay">
+                    <i class="fab fa-x-twitter"></i>
+                    <span>X</span>
+                </div>
+            </a>
+            <!-- 9. Youtube -->
+            <a href="https://www.youtube.com/@inaekkum" target="_blank" class="grid-item"
+                style="background-image: url('assets/youtube_final.jpg');">
+                <div class="overlay">
+                    <i class="fab fa-youtube"></i>
+                    <span>Youtube</span>
+                </div>
+            </a>
+        </div>
+        <div class="captcha-footer">
+            <div class="icons">
+                <i class="fas fa-sync-alt" onclick="playAudio('coin')"></i>
+                <i class="fas fa-headphones" onclick="playArpeggio()"></i>
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <button class="verify-btn">VERIFY</button>
+        </div>
+    </div>
+
+    <audio id="audio-coin" src="assets/coin.mp3"></audio>
+
+    <script>
+        function playAudio(type) {
+            const audio = document.getElementById('audio-' + type);
+            if (audio) {
+                audio.currentTime = 0; // Rewind to start
+                audio.play();
+            }
+        }
+
+        function playArpeggio() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+
+            const ctx = new AudioContext();
+            const now = ctx.currentTime;
+
+            // Notes: C6, E6, G6, C7 (High cute arpeggio)
+            const notes = [1046.50, 1318.51, 1567.98, 2093.00];
+
+            notes.forEach((freq, index) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                const startTime = now + (index * 0.1);
+                const duration = 0.2;
+
+                osc.start(startTime);
+
+                // Envelope
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+                osc.stop(startTime + duration);
+            });
+        }
+    </script>
+</body>
+
+</html>
